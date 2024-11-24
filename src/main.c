@@ -1,61 +1,41 @@
 #include "../incl/main.h"
 #include "../incl/problem.h"
-#include <assert.h>
 
 int main(void)
 {
-    int* case1AccountPointers[case1AccountsSize];
-    int* case2AccountPointers[case2AccountsSize];
-    int* case3AccountPointers[case3AccountsSize];
+    int runningReturn = 0;
 
-    // double dereferenced pointers: https://stackoverflow.com/questions/42118190/dereferencing-a-double-pointer
-    for (int i = 0; i < case1AccountsSize; i++)
-    {   //copy the addresses of each row in the account array `case1InputNums` to case1AccountPointers to make them double derefenced, as `maximumWealth` expects
-        case1AccountPointers[i] = case1InputNums[i];
+    printf("------------------------");
+    printf("Running Tests...");
+    printf("------------------------\n");
+
+    runningReturn += testCaseN(case1Num, case1Solution);
+    runningReturn += testCaseN(case2Num, case2Solution);
+    runningReturn += testCaseN(case3Num, case3Solution);
+
+    printf("------------------------");
+    printf("%d / %d tests passed!", runningReturn - NUM_TEST_CASES, NUM_TEST_CASES);
+    printf("------------------------\n");
+
+    return runningReturn;
+}
+
+int testCaseN(int num, int solution)
+{
+    bool rollingFlag = false;
+    int result = numberOfSteps(num);
+
+    printf("Test case %ld ", ++currentTestCase);
+    if ((result == solution)
+        && (MIN_RESULT <= result)
+        && (result <= MAX_RESULT))
+    {
+        printf("passed!\n");
+        return 0;
     }
-
-    for (int i = 0; i < case2AccountsSize; i++)
-    {   //copy the addresses of each row in the account array `case1InputNums` to case1AccountPointers to make them double derefenced, as `maximumWealth` expects
-        case2AccountPointers[i] = case2InputNums[i];
+    else
+    {
+        printf("FAILED!\n");
+        return 1;
     }
-
-    for (int i = 0; i < case3AccountsSize; i++)
-    {   //copy the addresses of each row in the account array `case1InputNums` to case1AccountPointers to make them double derefenced, as `maximumWealth` expects
-        case3AccountPointers[i] = case3InputNums[i];
-    }
-
-    printf("TEST CASE %ld ", ++currentTestCase);
-    assert(
-            maximumWealth(
-                case1AccountPointers,
-                case1AccountsSize,
-                (int*) case1AccountsColSize
-            )
-            == case1OutputNums
-    );
-    printf("PASSED!\n");
-
-    printf("TEST CASE %ld ", ++currentTestCase);
-    assert(
-            maximumWealth(
-                case2AccountPointers,
-                case2AccountsSize,
-                (int*) case2AccountsColSize
-            )
-            == case2OutputNums
-    );
-    printf("PASSED!\n");
-
-    printf("TEST CASE %ld ", ++currentTestCase);
-    assert(
-            maximumWealth(
-                case3AccountPointers,
-                case3AccountsSize,
-                (int*) case3AccountsColSize
-            )
-            == case3OutputNums
-    );
-    printf("PASSED!\n");
-
-    return 0;
 }
